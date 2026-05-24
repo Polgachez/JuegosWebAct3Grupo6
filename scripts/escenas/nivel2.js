@@ -6,193 +6,137 @@ export default class Nivel2 extends EscenaNivel {
 
     this.siguienteNivel = 'Nivel3';
     }
-    preload() {
-        // Fondos
-        this.load.image('cielo', 'assets/tiles/background_solid_cloud.png');
-        this.load.image('desierto', 'assets/tiles/background_color_trees.png');
-
-        // Terreno
-        this.load.image('top_left', 'assets/items/terrain_grass_block_top_left.png');
-        this.load.image('top', 'assets/items/terrain_grass_block_top.png');
-        this.load.image('top_right', 'assets/items/terrain_grass_block_top_right.png');
-        this.load.image('bloque', 'assets/items/terrain_grass_block.png');
-        this.load.image('nube', 'assets/items/terrain_grass_cloud.png');
-
-        // Plataformas
-        this.load.image('movil_left', 'assets/items/terrain_grass_horizontal_overhang_left.png');
-        this.load.image('movil_right', 'assets/items/terrain_grass_horizontal_overhang_right.png');
-        this.load.image('horizontal_left', 'assets/items/terrain_grass_horizontal_left.png');
-        this.load.image('horizontal_middle', 'assets/items/terrain_grass_horizontal_middle.png');
-        this.load.image('horizontal_right', 'assets/items/terrain_grass_horizontal_right.png');
-
-        // Obstáculos
-        this.load.image('lava', 'assets/items/water_top.png');
-        this.load.image('arbusto', 'assets/items/bush.png');
-        this.load.image('pinchos', 'assets/items/spikes.png');
-
-        // Escaleras
-        this.load.image('ladder_bottom', 'assets/items/ladder_bottom.png');
-        this.load.image('ladder_middle', 'assets/items/ladder_middle.png');
-        this.load.image('ladder_top', 'assets/items/ladder_top.png');
-
-        // Jugador
-        this.load.image('jugador_idle', 'assets/player/character_green_idle.png');
-        this.load.image('jugador_walk1', 'assets/player/character_green_walk_a.png');
-        this.load.image('jugador_walk2', 'assets/player/character_green_walk_b.png');
-        this.load.image('jugador_jump', 'assets/player/character_green_jump.png');
-        this.load.image('jugador_climb', 'assets/player/character_green_climb_a.png');
-
-        // Objetos
-        this.load.image('gema', 'assets/items/gem_green.png');
-        this.load.image('llave', 'assets/items/key_green.png');
-        this.load.image('puerta_cerrada', 'assets/items/door_closed_top.png');
-        this.load.image('puerta_abierta', 'assets/items/door_open_top.png');
-
-        // Enemigos
-        this.load.image('bee_a', 'assets/enemy/bee_a.png');
-        this.load.image('bee_b', 'assets/enemy/bee_b.png');
-    }
 
     create() {
         super.create();
 
-        this.totalGemas = 5;
-        this.textoPuntos.setText('Gemas: 0/5');
+        this.totalGemas = 4;
+        this.textoPuntos.setText('Gemas: 0/4');
 
-        this.crearSueloOriginal();
-        this.crearObstaculosOriginales();
-        this.crearEscalerasOriginales();
-        this.crearPlataformasOriginales();
-        this.crearGemasOriginales();
-        this.crearMetaYLlave(750, 65, 50, 450);
-        this.crearEnemigosOriginales();
+        this.crearSueloNivel2();
+        this.crearPlataformasNivel2();
+        this.crearEscalerasNivel2();
+        this.crearObstaculosNivel2();
+        this.crearGemasNivel2();
+        this.crearMetaYLlave(740, 70, 30, 45, 'llave_amarilla');
+        this.crearEnemigosNivel2();
 
-        this.crearJugador(100, 500);
+        this.crearJugador(70, 500);
 
         this.crearColisiones();
     }
 
-    
-    crearSueloOriginal() {
-        const escalaTile = 0.5;
-        const separacion = 64 * escalaTile;
-        const ySuelo = 580;
-        let xSuelo = 16;
+    crearSueloNivel2() {
+    const escalaTile = 0.5;
+    const separacion = 64 * escalaTile;
+    const ySuelo = 580;
+    let xSuelo = 16;
 
-        for (let i = 0; i < 7; i++) {
-            this.plataformas.create(xSuelo, ySuelo, 'top')
-                .setScale(escalaTile)
-                .refreshBody();
-
-            xSuelo += separacion;
-        }
-
-        this.plataformas.create(xSuelo, ySuelo, 'top_right')
-            .setScale(escalaTile)
-            .refreshBody();
-
-        xSuelo += separacion * 2;
-
-        for (let i = 0; i < 2; i++) {
-            this.lava.create(xSuelo, ySuelo, 'lava')
-                .setScale(escalaTile)
-                .refreshBody();
-
-            xSuelo += separacion * 2;
-        }
-
-        this.plataformas.create(xSuelo, ySuelo, 'top_left')
+    // Suelo izquierdo
+    while (xSuelo < 300) {
+        this.plataformas.create(xSuelo, ySuelo, 'top')
             .setScale(escalaTile)
             .refreshBody();
 
         xSuelo += separacion;
-
-        while (xSuelo <= 820) {
-            this.plataformas.create(xSuelo, ySuelo, 'top')
-                .setScale(escalaTile)
-                .refreshBody();
-
-            xSuelo += separacion;
-        }
     }
 
-    crearObstaculosOriginales() {
-        const arbusto = this.pinchos.create(530, 520, 'arbusto')
-            .setScale(0.45)
+    // Mover zona de lava un poco a la izquierda
+    xSuelo -= 20;
+
+    // Borde izquierdo de la lava
+    this.plataformas.create(xSuelo, ySuelo, 'top_right')
+        .setScale(escalaTile)
+        .refreshBody();
+
+    xSuelo += separacion * 2;
+
+    // Lava: 2 tiles
+    for (let i = 0; i < 2; i++) {
+        this.lava.create(xSuelo, ySuelo, 'lava')
+            .setScale(escalaTile)
             .refreshBody();
 
-        const pincho1 = this.pinchos.create(605, 290, 'pinchos')
-            .setScale(0.45)
+        xSuelo += separacion * 2;
+    }
+
+    // Borde derecho de la lava
+    this.plataformas.create(xSuelo, ySuelo, 'top_left')
+        .setScale(escalaTile)
+        .refreshBody();
+
+    xSuelo += separacion;
+
+    // Suelo derecho
+    while (xSuelo <= 820) {
+        this.plataformas.create(xSuelo, ySuelo, 'top')
+            .setScale(escalaTile)
             .refreshBody();
 
-        const pincho2 = this.pinchos.create(80, 290, 'pinchos')
-            .setScale(0.45)
-            .refreshBody();
+        xSuelo += separacion;
+    }
+}
 
-        this.ajustarColliderPincho(arbusto);
-        this.ajustarColliderPincho(pincho1);
-        this.ajustarColliderPincho(pincho2);
+    crearPlataformasNivel2() {
+        this.crearPlataformaFija(700, 125, 5);
+        this.crearNubesNivel2();
     }
 
-    crearEscalerasOriginales() {
-        this.crearEscalera(760, 545);
-        this.crearEscalera(138, 318);
-    }
+    crearNubesNivel2() {
+        const escalaNube = 0.4;
 
-    crearPlataformasOriginales() {
-        this.crearPlataformaFija(540, 350, 3);
-        this.crearPlataformaFija(30, 350, 3);
-        this.crearPlataformaFija(690, 125, 2);
-        this.crearPlataformaFija(275, 145, 0);
-        this.crearPlataformaFija(500, 145, 0);
-
-        this.crearPlataformaMovilOriginal();
-        this.crearNubesFalsasOriginales();
-    }
-
-    crearPlataformaMovilOriginal() {
-        const escala = 0.5;
-        const y = 340;
-        const xInicial = 380;
-        const separacion = 63;
-
-        this.movilLeft = this.plataformasMoviles.create(xInicial, y, 'movil_left')
-            .setScale(escala)
-            .setImmovable(true);
-
-        this.movilRight = this.plataformasMoviles.create(xInicial + separacion, y, 'movil_right')
-            .setScale(escala)
-            .setImmovable(true);
-
-        this.movilLeft.body.allowGravity = false;
-        this.movilRight.body.allowGravity = false;
-
-        this.movilDireccion = 1;
-    }
-
-    crearNubesFalsasOriginales() {
-       /* const escalaNube = 0.4;
-        const yNube = 130;
-
-        this.nubes.create(285, yNube, 'nube').setScale(escalaNube);
-        this.nubes.create(415, yNube, 'nube').setScale(escalaNube);
-        this.nubes.create(545, yNube, 'nube').setScale(escalaNube);
+        this.nubes.create(150, 140, 'nube').setScale(escalaNube);
+        this.nubes.create(300, 140, 'nube').setScale(escalaNube);
+        this.nubes.create(580, 140, 'nube').setScale(escalaNube);
+        this.nubes.create(470, 140, 'nube').setScale(escalaNube);
 
         this.nubes.children.iterate((nube) => {
             nube.refreshBody();
-        });*/
+        });
     }
 
-    crearGemasOriginales() {
-        this.crearGema(30, 60);
-        this.crearGema(330, 450);
-        this.crearGema(630, 500);
-        this.crearGema(350, 220);
-        this.crearGema(550, 285);
+    crearEscalerasNivel2() {
+        this.crearEscalera(140, 545);
+        this.crearEscalera(40, 300);
+        this.crearEscalera(310, 455);
+        this.crearEscalera(680, 450);
+
     }
 
-    crearEnemigosOriginales() {
-        this.crearAbejaHorizontal(240, 230, 240, 500);
-        this.crearAbejaHorizontal(240, 20, 100, 580);
+    crearObstaculosNivel2() {
+        this.cactus.create(240, 520, 'cactus')
+            .setScale(0.45)
+            .refreshBody();
+
+        this.cactus.create(550, 520, 'cactus')
+            .setScale(0.45)
+            .refreshBody();
+
+        this.cactus.create(700, 520, 'cactus')
+            .setScale(0.45)
+            .refreshBody();
+
+
+    }
+
+    crearGemasNivel2() {
+        this.crearGemaAmarilla(140, 390);
+        this.crearGemaAmarilla(310, 300);
+        this.crearGemaAmarilla(680, 230);
+        this.crearGemaAmarilla(750, 520);
+    }
+
+    crearGemaAmarilla(x, y) {
+        return this.gemas.create(x, y, 'gema_amarilla')
+            .setScale(0.4)
+            .refreshBody();
+    }
+
+    crearEnemigosNivel2() {
+        this.crearAbejaHorizontal(220, 320, 180, 430);
+
+
+
+        this.crearAbejaVertical(600, 180, 60, 300);
     }
 }

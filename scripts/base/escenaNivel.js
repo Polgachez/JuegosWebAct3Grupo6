@@ -283,17 +283,29 @@ export default class EscenaNivel extends Phaser.Scene {
             .refreshBody();
     }
 
-    crearMetaYLlave(xPuerta, yPuerta, xLlave, yLlave) {
-        this.meta = this.physics.add.staticSprite(xPuerta, yPuerta, 'puerta_cerrada');
+    crearMetaYLlave(xPuerta, yPuerta, xLlave, yLlave, texturaLlave = 'llave') {
+
+        // Puerta
+        this.meta = this.physics.add.staticSprite(
+            xPuerta,
+            yPuerta,
+            'puerta_cerrada'
+        );
+
         this.meta.setScale(0.45);
         this.meta.refreshBody();
 
-        this.llave = this.physics.add.staticSprite(xLlave, yLlave, 'llave');
+        // Llave
+        this.llave = this.physics.add.staticSprite(
+            xLlave,
+            yLlave,
+            texturaLlave
+        );
+
         this.llave.setScale(0.4);
         this.llave.refreshBody();
         this.llave.disableBody(true, true);
     }
-
     tocarNube(jugador, nube) {
         if (nube.activada) return;
 
