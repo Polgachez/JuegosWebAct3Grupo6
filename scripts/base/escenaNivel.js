@@ -187,12 +187,12 @@ export default class EscenaNivel extends Phaser.Scene {
     actualizarAbejaHorizontal(abeja) {
         if (abeja.x >= abeja.limiteDer) {
             abeja.setVelocityX(-this.velocidadAbeja);
-            abeja.flipX = true;
+            abeja.flipX = false;
         }
 
         if (abeja.x <= abeja.limiteIzq) {
             abeja.setVelocityX(this.velocidadAbeja);
-            abeja.flipX = false;
+            abeja.flipX = true;
         }
     }
 

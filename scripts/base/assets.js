@@ -56,6 +56,8 @@ export function cargarAssets(scene) {
     scene.load.image('llave_verde', 'assets/items/key_green.png');
     scene.load.image('gema_amarilla', 'assets/items/gem_yellow.png');
     scene.load.image('llave_amarilla', 'assets/items/key_yellow.png');
+    scene.load.image('gema_azul', 'assets/items/gem_blue.png');
+    scene.load.image('llave_azul', 'assets/items/hud_key_blue.png');
 
     // Enemigos
     scene.load.image('bee_a', 'assets/enemy/bee_a.png');
